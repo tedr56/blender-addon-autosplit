@@ -56,7 +56,10 @@ class AutoSplit(bpy.types.Operator):
         #Move Selected to layer 1
         layer1 = [False] * 20
         layer1[0] = True
-        bpy.ops.object.move_to_layer('INVOKE_DEFAULT', layers = layer1)
+        
+        context.scene.layers = layerAdd(context.scene.layers, layer1)
+        #bpy.ops.object.move_to_layer('INVOKE_DEFAULT', layers = layer1)
+        bpy.ops.object.move_to_layer(layers = layer1)
         context.scene.layers = layerAdd(context.scene.layers, layer1)
         
         #Duplicate
@@ -82,8 +85,8 @@ class AutoSplit(bpy.types.Operator):
         # Move Duplicates to layer 11
         layer11 = [False] * 20
         layer11[10] = True
-        bpy.ops.object.move_to_layer('INVOKE_DEFAULT', layers = layer11)
         context.scene.layers = layerAdd(context.scene.layers, layer11)
+        bpy.ops.object.move_to_layer(layers = layer11)
         
         #Add Splitting Plane for boolean
         if "SplitPlane" not in context.scene.objects:
