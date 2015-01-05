@@ -53,6 +53,15 @@ class AutoSplit(bpy.types.Operator):
         # Save Selection
         selectedObjects = context.selected_objects
         
+        #Move other objects to layer
+        layer5 = [False] * 20
+        layer5[4] = True
+        
+        bpy.ops.object.select_all(action='INVERT')
+        context.scene.layers = layerAdd(context.scene.layers, layer5)
+        bpy.ops.object.move_to_layer(layers = layer5)
+        bpy.ops.object.select_all(action='INVERT')
+        
         #Move Selected to layer 1
         layer1 = [False] * 20
         layer1[0] = True
@@ -95,7 +104,7 @@ class AutoSplit(bpy.types.Operator):
             SplitPlane.name = "SplitPlane"
             SplitPlane.draw_type = 'WIRE'
         SplitPlane = context.scene.objects["SplitPlane"]
-
+        
         #Apply Front Boolean
         for obj in selectedObjects:
             bpy.context.scene.objects.active = obj
@@ -126,6 +135,7 @@ class AutoSplit(bpy.types.Operator):
             BackLayer = RenderLayers.new("BackRender")
             FrontLayer.layers =  layerSubstract(context.scene.layers, layer11)
             BackLayer.layers = layerSubstract(context.scene.layers, layer1)
+
         #  Create Node Setup
         context.scene.use_nodes = True
         tree = context.scene.node_tree
